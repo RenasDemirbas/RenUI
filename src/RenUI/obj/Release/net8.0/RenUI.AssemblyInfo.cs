@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Modular UI Library for MonoGame")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bf19ae69b3fe1da1b98551fcbca5a7fa462f287f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3fec125ba1f8f5e13541c261b727bd6f85ccf108")]
 [assembly: System.Reflection.AssemblyProductAttribute("RenUI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RenUI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
