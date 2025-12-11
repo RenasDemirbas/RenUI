@@ -137,6 +137,7 @@ public class UIBuilder
             "TextBox" => new TextBox(),
             "CheckBox" => new CheckBox(),
             "Slider" => new Slider(),
+            "Image" => new Image(),
             _ => null
         };
 
@@ -184,6 +185,11 @@ public class UIBuilder
             SetFont(element, font);
         }
 
+        if (!string.IsNullOrEmpty(data.TextureId) && _textures.TryGetValue(data.TextureId, out var texture))
+        {
+            SetTexture(element, texture);
+        }
+
         ApplyTypeSpecificProperties(element, data);
     }
 
@@ -195,6 +201,14 @@ public class UIBuilder
             case Label label: label.Font = font; break;
             case TextBox textBox: textBox.Font = font; break;
             case CheckBox checkBox: checkBox.Font = font; break;
+        }
+    }
+
+    private void SetTexture(UIElement element, Texture2D texture)
+    {
+        switch (element)
+        {
+            case Image image: image.Texture = texture; break;
         }
     }
 
@@ -295,6 +309,31 @@ public class UIBuilder
                     panel.BorderThickness = Convert.ToInt32(pnlThickness);
                 if (props.TryGetValue("cornerRadius", out var pnlRadius))
                     panel.CornerRadius = Convert.ToInt32(pnlRadius);
+                break;
+
+            case Image image:
+                if (props.TryGetValue("tint", out var imgTint))
+                    image.Tint = HexToColor(imgTint?.ToString());
+                if (props.TryGetValue("rotation", out var imgRotation))
+                    image.Rotation = Convert.ToSingle(imgRotation);
+                if (props.TryGetValue("stretchMode", out var imgStretch) &&
+                    Enum.TryParse<ImageStretchMode>(imgStretch?.ToString(), out var stretchMode))
+                    image.StretchMode = stretchMode;
+                if (props.TryGetValue("horizontalAlignment", out var imgHAlign) &&
+                    Enum.TryParse<HorizontalAlignment>(imgHAlign?.ToString(), out var imgHorizontal))
+                    image.HorizontalAlignment = imgHorizontal;
+                if (props.TryGetValue("verticalAlignment", out var imgVAlign) &&
+                    Enum.TryParse<VerticalAlignment>(imgVAlign?.ToString(), out var imgVertical))
+                    image.VerticalAlignment = imgVertical;
+                if (props.TryGetValue("preserveAspectRatio", out var imgPreserve))
+                    image.PreserveAspectRatio = Convert.ToBoolean(imgPreserve);
+                if (props.TryGetValue("autoSize", out var imgAutoSize))
+                    image.AutoSize = Convert.ToBoolean(imgAutoSize);
+                if (props.TryGetValue("sourceX", out var srcX) && props.TryGetValue("sourceY", out var srcY) &&
+                    props.TryGetValue("sourceWidth", out var srcW) && props.TryGetValue("sourceHeight", out var srcH))
+                    image.SourceRectangle = new Rectangle(
+                        Convert.ToInt32(srcX), Convert.ToInt32(srcY),
+                        Convert.ToInt32(srcW), Convert.ToInt32(srcH));
                 break;
         }
     }

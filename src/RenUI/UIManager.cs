@@ -38,6 +38,8 @@ public sealed class UIManager
     public SceneManager Scenes => SceneManager.Instance;
     public ThemeManager Themes => ThemeManager.Instance;
     public UILayoutManager Layouts => UILayoutManager.Instance;
+    public FontManager Fonts => FontManager.Instance;
+    public SpriteManager Sprites => SpriteManager.Instance;
 
     public bool IsInitialized => _isInitialized;
     public GraphicsDevice? GraphicsDevice => _graphicsDevice;
@@ -54,6 +56,8 @@ public sealed class UIManager
         _spriteBatch = new SpriteBatch(graphicsDevice);
 
         PrimitiveRenderer.Initialize(graphicsDevice);
+        FontManager.Instance.Initialize(content);
+        SpriteManager.Instance.Initialize(content, graphicsDevice);
         SceneManager.Instance.Initialize(content, graphicsDevice);
         UILayoutManager.Instance.Initialize(content);
 
@@ -107,6 +111,8 @@ public sealed class UIManager
             SceneManager.Reset();
             ThemeManager.Reset();
             UILayoutManager.Reset();
+            FontManager.Reset();
+            SpriteManager.Reset();
         }
     }
 }

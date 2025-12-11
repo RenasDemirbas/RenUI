@@ -10,6 +10,7 @@
   - [CheckBox](#checkbox)
   - [Slider](#slider)
   - [Panel](#panel)
+  - [Image](#image)
 
 ---
 
@@ -444,4 +445,223 @@ settingsPanel.LayoutStrategy = new StackLayout(Orientation.Vertical, 12);
 settingsPanel.AddChild(new Label("Ayarlar"));
 settingsPanel.AddChild(new CheckBox("Ses"));
 settingsPanel.AddChild(new Slider());
+```
+
+---
+
+### Image
+
+Görüntü/sprite gösterme kontrolü. Texture, sprite sheet ve atlas desteği içerir.
+
+```csharp
+public class Image : UIElement
+{
+    // Texture
+    public Texture2D? Texture { get; set; }
+    public Rectangle? SourceRectangle { get; set; }
+    
+    // Görünüm
+    public Color Tint { get; set; } = Color.White;
+    public float Rotation { get; set; } = 0f;
+    public Vector2 Scale { get; set; } = Vector2.One;
+    public SpriteEffects Effects { get; set; } = SpriteEffects.None;
+    public float LayerDepth { get; set; } = 0f;
+    
+    // Boyutlandırma
+    public ImageStretchMode StretchMode { get; set; } = ImageStretchMode.Uniform;
+    public HorizontalAlignment HorizontalAlignment { get; set; } = HorizontalAlignment.Center;
+    public VerticalAlignment VerticalAlignment { get; set; } = VerticalAlignment.Center;
+    public bool PreserveAspectRatio { get; set; } = true;
+    public bool AutoSize { get; set; } = false;
+    
+    // Sprite sheet yardımcıları
+    public void SetSpriteSheet(int column, int row, int frameWidth, int frameHeight);
+    public void SetSpriteSheetFrame(int frameIndex, int frameWidth, int frameHeight, int columns);
+    
+    public Image();
+    public Image(Texture2D texture);
+}
+
+public enum ImageStretchMode
+{
+    None,           // Orijinal boyut, hizalama uygula
+    Fill,           // Alanı tamamen doldur (oranı bozabilir)
+    Uniform,        // Oranı koru, alana sığdır
+    UniformToFill   // Oranı koru, alanı doldur (kırpılabilir)
+}
+
+public enum HorizontalAlignment { Left, Center, Right }
+public enum VerticalAlignment { Top, Center, Bottom }
+```
+
+**Özellikler:**
+
+| Özellik | Varsayılan | Açıklama |
+|---------|------------|----------|
+| `Texture` | `null` | Gösterilecek texture |
+| `SourceRectangle` | `null` | Texture'dan kesilecek bölge (sprite sheet için) |
+| `Tint` | `White` | Renk tonu |
+| `Rotation` | `0f` | Döndürme açısı (radyan) |
+| `StretchMode` | `Uniform` | Boyutlandırma modu |
+| `AutoSize` | `false` | Otomatik boyutlandırma |
+
+**Temel Kullanım:**
+
+```csharp
+// Basit resim
+var logo = new Image
+{
+    Texture = Content.Load<Texture2D>("Textures/Logo"),
+    Width = 300,
+    Height = 150,
+    StretchMode = ImageStretchMode.Uniform
+};
+
+// SpriteManager ile
+var avatar = new Image
+{
+    Texture = UIManager.Instance.Sprites.GetTexture("avatars"),
+    Width = 64,
+    Height = 64
+};
+
+// Otomatik boyut
+var icon = new Image(iconTexture)
+{
+    AutoSize = true  // Texture boyutuna göre boyutlanır
+};
+```
+
+**Stretch Mode Örnekleri:**
+
+```csharp
+// None: Orijinal boyut, ortala
+var img1 = new Image(texture)
+{
+    Width = 200,
+    Height = 200,
+    StretchMode = ImageStretchMode.None,
+    HorizontalAlignment = HorizontalAlignment.Center,
+    VerticalAlignment = VerticalAlignment.Center
+};
+
+// Fill: Alanı tamamen doldur (oran bozulabilir)
+var background = new Image(bgTexture)
+{
+    Bounds = new Rectangle(0, 0, 1920, 1080),
+    StretchMode = ImageStretchMode.Fill
+};
+
+// Uniform: Oranı koru, alana sığdır
+var photo = new Image(photoTexture)
+{
+    Width = 400,
+    Height = 300,
+    StretchMode = ImageStretchMode.Uniform
+};
+
+// UniformToFill: Oranı koru, alanı tamamen doldur
+var thumbnail = new Image(photoTexture)
+{
+    Width = 100,
+    Height = 100,
+    StretchMode = ImageStretchMode.UniformToFill
+};
+```
+
+**Sprite Sheet Kullanımı:**
+
+```csharp
+// Manuel source rectangle
+var sprite = new Image
+{
+    Texture = spriteSheetTexture,
+    SourceRectangle = new Rectangle(64, 0, 64, 64), // 2. kare
+    Width = 64,
+    Height = 64
+};
+
+// Yardımcı metodlarla
+var icon = new Image
+{
+    Texture = iconSheet,
+    Width = 32,
+    Height = 32
+};
+icon.SetSpriteSheet(2, 1, 32, 32); // 3. sütun, 2. satır
+
+// Frame index ile (soldan sağa, yukarıdan aşağı)
+icon.SetSpriteSheetFrame(7, 32, 32, 8); // 8. frame, 8 sütunlu sheet
+```
+
+**Efektler:**
+
+```csharp
+// Renk tonu
+var tintedImage = new Image(texture)
+{
+    Tint = Color.Red * 0.5f,  // Yarı saydam kırmızı
+    Width = 100,
+    Height = 100
+};
+
+// Döndürme
+var rotatedImage = new Image(texture)
+{
+    Rotation = MathHelper.PiOver4,  // 45 derece
+    Width = 100,
+    Height = 100
+};
+
+// Yansıtma
+var flippedImage = new Image(texture)
+{
+    Effects = SpriteEffects.FlipHorizontally,
+    Width = 100,
+    Height = 100
+};
+
+// Dikey ve yatay yansıtma
+var mirroredImage = new Image(texture)
+{
+    Effects = SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically,
+    Width = 100,
+    Height = 100
+};
+```
+
+**JSON'da Image Tanımlama:**
+
+```json
+{
+  "id": "game_logo",
+  "type": "Image",
+  "name": "GameLogo",
+  "textureId": "logo",
+  "x": 760, "y": 100,
+  "width": 400, "height": 200,
+  "properties": {
+    "stretchMode": "Uniform",
+    "horizontalAlignment": "Center",
+    "tint": "#FFFFFFFF"
+  }
+}
+```
+
+```json
+{
+  "id": "player_icon",
+  "type": "Image",
+  "name": "PlayerIcon",
+  "textureId": "icons",
+  "x": 20, "y": 20,
+  "width": 48, "height": 48,
+  "properties": {
+    "sourceX": 96,
+    "sourceY": 0,
+    "sourceWidth": 48,
+    "sourceHeight": 48,
+    "stretchMode": "None"
+  }
+}
 ```

@@ -6,6 +6,9 @@
 - [Scenes Modülü](#scenes-modülü)
 - [Styling Modülü](#styling-modülü)
 - [Rendering Modülü](#rendering-modülü)
+  - [PrimitiveRenderer](#primitiverenderer)
+  - [FontManager](#fontmanager)
+  - [SpriteManager](#spritemanager)
 - [Serialization Modülü](#serialization-modülü)
 
 ---
@@ -24,6 +27,8 @@ public sealed class UIManager
     public SceneManager Scenes { get; }
     public ThemeManager Themes { get; }
     public UILayoutManager Layouts { get; }
+    public FontManager Fonts { get; }
+    public SpriteManager Sprites { get; }
     
     // Durum
     public bool IsInitialized { get; }
@@ -46,12 +51,22 @@ public sealed class UIManager
 var input = UIManager.Instance.Input;
 var scenes = UIManager.Instance.Scenes;
 var themes = UIManager.Instance.Themes;
+var fonts = UIManager.Instance.Fonts;
+var sprites = UIManager.Instance.Sprites;
 
 // RenUIGame içinde kısayol
 public class MyGame : RenUIGame
 {
     protected override void OnUIInitialized()
     {
+        // Font yükleme
+        UI.Fonts.LoadFont("default", "Fonts/DefaultFont");
+        UI.Fonts.LoadFont("title", "Fonts/TitleFont");
+        
+        // Sprite yükleme
+        UI.Sprites.LoadTexture("logo", "Textures/Logo");
+        UI.Sprites.LoadTexture("icons", "Textures/IconSheet");
+        
         UI.Scenes.RegisterScene("Menu", new MenuScene());
         UI.Themes.SetTheme("Dark");
     }
@@ -436,6 +451,425 @@ public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         new Vector2(bounds.X, bounds.Bottom),
         new Vector2(bounds.Right, bounds.Bottom),
         Color.Gray, 1);
+}
+```
+
+---
+
+### FontManager
+
+Font (yazı tipi) yönetim singleton'ı. TTF fontlarını MonoGame SpriteFont formatında yükler ve yönetir.
+
+```csharp
+public sealed class FontManager
+{
+    public static FontManager Instance { get; }
+    
+    // Varsayılan font
+    public SpriteFont? DefaultFont { get; set; }
+    
+    // Başlatma
+    public void Initialize(ContentManager content);
+    
+    // Font yükleme
+    public SpriteFont? LoadFont(string fontId, string contentPath);
+    public SpriteFont? LoadFontWithSizes(string fontFamily, string basePath, params int[] sizes);
+    
+    // Font kayıt
+    public void RegisterFont(string fontId, SpriteFont font, string? sourcePath = null);
+    public void UnregisterFont(string fontId);
+    
+    // Font erişimi
+    public SpriteFont? GetFont(string fontId);
+    public SpriteFont? GetFontOrDefault(string? fontId);
+    public SpriteFont GetFontRequired(string fontId);
+    public bool HasFont(string fontId);
+    
+    // Font bilgisi
+    public FontInfo? GetFontInfo(string fontId);
+    public IEnumerable<string> GetFontIds();
+    public IEnumerable<FontInfo> GetAllFontInfos();
+    
+    // Yardımcı metodlar
+    public Vector2 MeasureString(string fontId, string text);
+    public Vector2 MeasureString(string text);  // DefaultFont ile
+    public float GetLineSpacing(string fontId);
+    
+    // Çizim yardımcıları
+    public void DrawString(SpriteBatch spriteBatch, string fontId, string text, 
+                          Vector2 position, Color color);
+    public void DrawString(SpriteBatch spriteBatch, string fontId, string text, 
+                          Vector2 position, Color color, float rotation, 
+                          Vector2 origin, float scale, SpriteEffects effects, float layerDepth);
+    
+    public void Clear();
+    public static void Reset();
+}
+
+public class FontInfo
+{
+    public string Id { get; }
+    public string SourcePath { get; }
+    public SpriteFont Font { get; }
+    public int LineSpacing { get; }
+    public float Spacing { get; }
+}
+```
+
+**TTF Font Kullanımı:**
+
+MonoGame'de TTF fontları doğrudan kullanılamaz. Önce `.spritefont` dosyasına dönüştürülmesi gerekir:
+
+1. **Content Pipeline ile:**
+```xml
+<!-- Content/Fonts/Arial.spritefont -->
+<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Graphics="Microsoft.Xna.Framework.Content.Pipeline.Graphics">
+  <Asset Type="Graphics:FontDescription">
+    <FontName>Arial</FontName>
+    <Size>16</Size>
+    <Spacing>0</Spacing>
+    <UseKerning>true</UseKerning>
+    <Style>Regular</Style>
+    <CharacterRegions>
+      <CharacterRegion>
+        <Start>&#32;</Start>
+        <End>&#126;</End>
+      </CharacterRegion>
+      <!-- Türkçe karakterler -->
+      <CharacterRegion>
+        <Start>&#199;</Start>
+        <End>&#199;</End>
+      </CharacterRegion>
+      <CharacterRegion>
+        <Start>&#231;</Start>
+        <End>&#231;</End>
+      </CharacterRegion>
+      <CharacterRegion>
+        <Start>&#286;</Start>
+        <End>&#287;</End>
+      </CharacterRegion>
+      <CharacterRegion>
+        <Start>&#304;</Start>
+        <End>&#305;</End>
+      </CharacterRegion>
+      <CharacterRegion>
+        <Start>&#214;</Start>
+        <End>&#214;</End>
+      </CharacterRegion>
+      <CharacterRegion>
+        <Start>&#246;</Start>
+        <End>&#246;</End>
+      </CharacterRegion>
+      <CharacterRegion>
+        <Start>&#350;</Start>
+        <End>&#351;</End>
+      </CharacterRegion>
+      <CharacterRegion>
+        <Start>&#220;</Start>
+        <End>&#220;</End>
+      </CharacterRegion>
+      <CharacterRegion>
+        <Start>&#252;</Start>
+        <End>&#252;</End>
+      </CharacterRegion>
+    </CharacterRegions>
+  </Asset>
+</XnaContent>
+```
+
+2. **Farklı boyutlar için:**
+```csharp
+// Fonts/Roboto_12.spritefont, Fonts/Roboto_16.spritefont, Fonts/Roboto_24.spritefont
+UI.Fonts.LoadFontWithSizes("Roboto", "Fonts/Roboto", 12, 16, 24);
+
+// Erişim
+var smallFont = UI.Fonts.GetFont("Roboto_12");
+var normalFont = UI.Fonts.GetFont("Roboto_16");
+var largeFont = UI.Fonts.GetFont("Roboto_24");
+```
+
+**Kullanım Örnekleri:**
+
+```csharp
+// Başlatma
+protected override void OnUIInitialized()
+{
+    // Fontları yükle
+    UI.Fonts.LoadFont("default", "Fonts/OpenSans");
+    UI.Fonts.LoadFont("title", "Fonts/Montserrat_Bold");
+    UI.Fonts.LoadFont("mono", "Fonts/JetBrainsMono");
+    
+    // Varsayılan font ayarla
+    UI.Fonts.DefaultFont = UI.Fonts.GetFont("default");
+}
+
+// UI elemanlarında kullanım
+var label = new Label("Merhaba Dünya!")
+{
+    Font = UI.Fonts.GetFont("title"),
+    TextColor = Color.Gold
+};
+
+var button = new Button("Başla")
+{
+    Font = UI.Fonts.GetFontOrDefault("default"),
+    Width = 200,
+    Height = 50
+};
+
+// Metin ölçümü
+var textSize = UI.Fonts.MeasureString("title", "Game Over");
+Console.WriteLine($"Metin boyutu: {textSize.X}x{textSize.Y}");
+
+// Özel çizim
+public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+{
+    UI.Fonts.DrawString(spriteBatch, "mono", "Score: 1000", 
+        new Vector2(10, 10), Color.White);
+}
+```
+
+**Font Listesi:**
+```csharp
+// Yüklü fontları listele
+foreach (var fontId in UI.Fonts.GetFontIds())
+{
+    var info = UI.Fonts.GetFontInfo(fontId);
+    Console.WriteLine($"Font: {info.Id}, Path: {info.SourcePath}, LineSpacing: {info.LineSpacing}");
+}
+```
+
+---
+
+### SpriteManager
+
+Sprite (görüntü) ve texture yönetim singleton'ı. Sprite sheet ve atlas desteği içerir.
+
+```csharp
+public sealed class SpriteManager
+{
+    public static SpriteManager Instance { get; }
+    
+    // Başlatma
+    public void Initialize(ContentManager content, GraphicsDevice graphicsDevice);
+    
+    // Texture yükleme
+    public Texture2D? LoadTexture(string textureId, string contentPath);
+    public Texture2D? LoadTextureFromFile(string textureId, string filePath);
+    
+    // Texture kayıt
+    public void RegisterTexture(string textureId, Texture2D texture);
+    public void UnregisterTexture(string textureId);
+    
+    // Texture erişimi
+    public Texture2D? GetTexture(string textureId);
+    public bool HasTexture(string textureId);
+    
+    // Sprite Sheet
+    public SpriteSheet CreateSpriteSheet(string sheetId, string textureId, 
+                                          int frameWidth, int frameHeight);
+    public SpriteSheet CreateSpriteSheet(string sheetId, Texture2D texture, 
+                                          int frameWidth, int frameHeight);
+    public SpriteSheet? GetSpriteSheet(string sheetId);
+    
+    // Sprite Atlas
+    public SpriteAtlas CreateAtlas(string atlasId, string textureId);
+    public SpriteAtlas? GetAtlas(string atlasId);
+    public Sprite? GetSprite(string atlasId, string spriteName);
+    
+    // Listeleme
+    public IEnumerable<string> GetTextureIds();
+    public IEnumerable<string> GetSpriteSheetIds();
+    public IEnumerable<string> GetAtlasIds();
+    
+    public void Clear();
+    public static void Reset();
+}
+```
+
+**SpriteSheet Sınıfı:**
+
+Eşit boyutlu karelere bölünmüş sprite sheet'ler için.
+
+```csharp
+public class SpriteSheet
+{
+    public string Id { get; }
+    public Texture2D Texture { get; }
+    public int FrameWidth { get; }
+    public int FrameHeight { get; }
+    public int Columns { get; }
+    public int Rows { get; }
+    public int TotalFrames { get; }
+    
+    public Rectangle GetFrameRectangle(int frameIndex);
+    public Rectangle GetFrameRectangle(int column, int row);
+}
+```
+
+**SpriteAtlas Sınıfı:**
+
+Farklı boyutlarda sprite'lar içeren atlas'lar için.
+
+```csharp
+public class SpriteAtlas
+{
+    public string Id { get; }
+    public Texture2D Texture { get; }
+    
+    public void DefineSprite(string name, Rectangle sourceRectangle, 
+                             Vector2? origin = null, Vector2? pivot = null);
+    public void DefineSprite(string name, int x, int y, int width, int height, 
+                             Vector2? origin = null, Vector2? pivot = null);
+    
+    public Sprite? GetSprite(string name);
+    public bool HasSprite(string name);
+    public IEnumerable<string> GetSpriteNames();
+    public IEnumerable<Sprite> GetAllSprites();
+}
+```
+
+**Sprite Sınıfı:**
+
+```csharp
+public class Sprite
+{
+    public string Name { get; }
+    public Texture2D Texture { get; }
+    public Rectangle SourceRectangle { get; }
+    public Vector2 Origin { get; }
+    public Vector2 Pivot { get; }
+    public int Width { get; }
+    public int Height { get; }
+    
+    public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color);
+    public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color, 
+                    float rotation, float scale, SpriteEffects effects, float layerDepth);
+    public void Draw(SpriteBatch spriteBatch, Rectangle destinationRectangle, Color color);
+}
+```
+
+**Kullanım Örnekleri:**
+
+```csharp
+// Başlatma
+protected override void OnUIInitialized()
+{
+    // Texture yükleme
+    UI.Sprites.LoadTexture("logo", "Textures/GameLogo");
+    UI.Sprites.LoadTexture("background", "Textures/MenuBackground");
+    UI.Sprites.LoadTexture("icons", "Textures/IconSheet");
+    UI.Sprites.LoadTexture("ui_atlas", "Textures/UIAtlas");
+    
+    // Sprite Sheet oluşturma (64x64 kareler)
+    var iconSheet = UI.Sprites.CreateSpriteSheet("icon_sheet", "icons", 64, 64);
+    
+    // Atlas oluşturma ve sprite tanımlama
+    var atlas = UI.Sprites.CreateAtlas("ui", "ui_atlas");
+    atlas.DefineSprite("button_normal", 0, 0, 200, 50);
+    atlas.DefineSprite("button_hover", 0, 50, 200, 50);
+    atlas.DefineSprite("button_pressed", 0, 100, 200, 50);
+    atlas.DefineSprite("checkbox_unchecked", 200, 0, 24, 24);
+    atlas.DefineSprite("checkbox_checked", 224, 0, 24, 24);
+    atlas.DefineSprite("slider_track", 200, 24, 200, 8);
+    atlas.DefineSprite("slider_thumb", 200, 32, 16, 16);
+}
+
+// Image elementi ile kullanım
+var logo = new Image
+{
+    Texture = UI.Sprites.GetTexture("logo"),
+    Width = 400,
+    Height = 200,
+    StretchMode = ImageStretchMode.Uniform
+};
+
+// Sprite Sheet frame kullanımı
+var iconImage = new Image
+{
+    Texture = UI.Sprites.GetTexture("icons"),
+    Width = 64,
+    Height = 64
+};
+iconImage.SetSpriteSheetFrame(5, 64, 64, 8); // 5. frame, 8 sütunlu sheet
+
+// Atlas sprite kullanımı
+var atlas = UI.Sprites.GetAtlas("ui");
+var buttonSprite = atlas?.GetSprite("button_normal");
+if (buttonSprite != null)
+{
+    buttonSprite.Draw(spriteBatch, new Vector2(100, 100), Color.White);
+}
+
+// Özel çizim
+public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+{
+    var sheet = UI.Sprites.GetSpriteSheet("icon_sheet");
+    if (sheet != null)
+    {
+        var frameRect = sheet.GetFrameRectangle(_currentFrame);
+        spriteBatch.Draw(sheet.Texture, Position.ToVector2(), frameRect, Color.White);
+    }
+}
+```
+
+**Animasyon Örneği:**
+
+```csharp
+public class AnimatedImage : Image
+{
+    private SpriteSheet? _spriteSheet;
+    private int _currentFrame;
+    private float _frameTime;
+    private float _frameTimer;
+    private int _startFrame;
+    private int _endFrame;
+    private bool _isLooping = true;
+    
+    public void SetAnimation(string sheetId, int startFrame, int endFrame, float fps)
+    {
+        _spriteSheet = SpriteManager.Instance.GetSpriteSheet(sheetId);
+        if (_spriteSheet != null)
+        {
+            Texture = _spriteSheet.Texture;
+            _startFrame = startFrame;
+            _endFrame = endFrame;
+            _currentFrame = startFrame;
+            _frameTime = 1f / fps;
+            _frameTimer = 0;
+            UpdateSourceRectangle();
+        }
+    }
+    
+    public override void Update(GameTime gameTime)
+    {
+        base.Update(gameTime);
+        
+        if (_spriteSheet == null) return;
+        
+        _frameTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        if (_frameTimer >= _frameTime)
+        {
+            _frameTimer = 0;
+            _currentFrame++;
+            
+            if (_currentFrame > _endFrame)
+            {
+                _currentFrame = _isLooping ? _startFrame : _endFrame;
+            }
+            
+            UpdateSourceRectangle();
+        }
+    }
+    
+    private void UpdateSourceRectangle()
+    {
+        if (_spriteSheet != null)
+        {
+            SourceRectangle = _spriteSheet.GetFrameRectangle(_currentFrame);
+        }
+    }
 }
 ```
 
