@@ -1,0 +1,210 @@
+{
+  "version": "1.0",
+  "name": "MainMenu",
+  "description": "Main menu UI layout",
+  "width": 1920,
+  "height": 1080,
+  "resources": {
+    "textures": {
+      "logo": "Textures/logo",
+      "background": "Textures/menu_bg",
+      "button_normal": "Textures/button_normal",
+      "button_hover": "Textures/button_hover"
+    },
+    "fonts": {
+      "default": "Fonts/DefaultFont",
+      "title": "Fonts/TitleFont"
+    }
+  },
+  "elements": [
+    {
+      "id": "panel_main_container",
+      "type": "Panel",
+      "name": "MainContainer",
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1080,
+      "isEnabled": true,
+      "isVisible": true,
+      "anchor": "Fill",
+      "margin": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+      "padding": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+      "properties": {
+        "backgroundColor": "#1A1A1AFF",
+        "borderThickness": 0
+      },
+      "children": [
+        {
+          "id": "label_game_title",
+          "type": "Label",
+          "name": "GameTitle",
+          "fontId": "title",
+          "x": 760,
+          "y": 150,
+          "width": 400,
+          "height": 80,
+          "isEnabled": true,
+          "isVisible": true,
+          "anchor": "TopCenter",
+          "margin": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "padding": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "properties": {
+            "text": "MY GAME",
+            "textColor": "#FFFFFFFF",
+            "horizontalAlignment": "Center",
+            "verticalAlignment": "Center"
+          },
+          "children": []
+        },
+        {
+          "id": "panel_menu_buttons",
+          "type": "Panel",
+          "name": "MenuButtonsPanel",
+          "x": 760,
+          "y": 350,
+          "width": 400,
+          "height": 400,
+          "isEnabled": true,
+          "isVisible": true,
+          "anchor": "Center",
+          "margin": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "padding": { "left": 20, "top": 20, "right": 20, "bottom": 20 },
+          "properties": {
+            "backgroundColor": "#00000000",
+            "borderThickness": 0
+          },
+          "children": [
+            {
+              "id": "btn_start_game",
+              "type": "Button",
+              "name": "StartButton",
+              "fontId": "default",
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 60,
+              "isEnabled": true,
+              "isVisible": true,
+              "anchor": "TopCenter",
+              "margin": { "left": 0, "top": 0, "right": 0, "bottom": 16 },
+              "padding": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+              "properties": {
+                "text": "Start Game",
+                "backgroundColor": "#0078D7FF",
+                "hoverColor": "#1E90FFFF",
+                "pressedColor": "#005A9EFF",
+                "textColor": "#FFFFFFFF",
+                "borderThickness": 0,
+                "cornerRadius": 8
+              },
+              "children": []
+            },
+            {
+              "id": "btn_options",
+              "type": "Button",
+              "name": "OptionsButton",
+              "fontId": "default",
+              "x": 0,
+              "y": 76,
+              "width": 360,
+              "height": 60,
+              "isEnabled": true,
+              "isVisible": true,
+              "anchor": "TopCenter",
+              "margin": { "left": 0, "top": 0, "right": 0, "bottom": 16 },
+              "padding": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+              "properties": {
+                "text": "Options",
+                "backgroundColor": "#464646FF",
+                "hoverColor": "#5A5A5AFF",
+                "pressedColor": "#323232FF",
+                "textColor": "#FFFFFFFF",
+                "borderThickness": 0,
+                "cornerRadius": 8
+              },
+              "children": []
+            },
+            {
+              "id": "btn_credits",
+              "type": "Button",
+              "name": "CreditsButton",
+              "fontId": "default",
+              "x": 0,
+              "y": 152,
+              "width": 360,
+              "height": 60,
+              "isEnabled": true,
+              "isVisible": true,
+              "anchor": "TopCenter",
+              "margin": { "left": 0, "top": 0, "right": 0, "bottom": 16 },
+              "padding": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+              "properties": {
+                "text": "Credits",
+                "backgroundColor": "#464646FF",
+                "hoverColor": "#5A5A5AFF",
+                "pressedColor": "#323232FF",
+                "textColor": "#FFFFFFFF",
+                "borderThickness": 0,
+                "cornerRadius": 8
+              },
+              "children": []
+            },
+            {
+              "id": "btn_exit",
+              "type": "Button",
+              "name": "ExitButton",
+              "fontId": "default",
+              "x": 0,
+              "y": 228,
+              "width": 360,
+              "height": 60,
+              "isEnabled": true,
+              "isVisible": true,
+              "anchor": "TopCenter",
+              "margin": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+              "padding": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+              "properties": {
+                "text": "Exit",
+                "backgroundColor": "#8B0000FF",
+                "hoverColor": "#B22222FF",
+                "pressedColor": "#660000FF",
+                "textColor": "#FFFFFFFF",
+                "borderThickness": 0,
+                "cornerRadius": 8
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "label_version",
+          "type": "Label",
+          "name": "VersionLabel",
+          "fontId": "default",
+          "x": 20,
+          "y": 1040,
+          "width": 200,
+          "height": 24,
+          "isEnabled": true,
+          "isVisible": true,
+          "anchor": "BottomLeft",
+          "margin": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "padding": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "properties": {
+            "text": "v1.0.0",
+            "textColor": "#808080FF",
+            "horizontalAlignment": "Start",
+            "verticalAlignment": "Center"
+          },
+          "children": []
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "author": "RenUI Editor",
+    "createdAt": "2024-01-01",
+    "lastModified": "2024-01-01"
+  }
+}

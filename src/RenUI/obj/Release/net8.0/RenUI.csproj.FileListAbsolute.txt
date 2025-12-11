@@ -1,0 +1,12 @@
+C:\Users\renas\Desktop\Projects\RenUI\src\RenUI\bin\Release\net8.0\RenUI.deps.json
+C:\Users\renas\Desktop\Projects\RenUI\src\RenUI\bin\Release\net8.0\RenUI.dll
+C:\Users\renas\Desktop\Projects\RenUI\src\RenUI\bin\Release\net8.0\RenUI.pdb
+C:\Users\renas\Desktop\Projects\RenUI\src\RenUI\obj\Release\net8.0\RenUI.csproj.AssemblyReference.cache
+C:\Users\renas\Desktop\Projects\RenUI\src\RenUI\obj\Release\net8.0\RenUI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\renas\Desktop\Projects\RenUI\src\RenUI\obj\Release\net8.0\RenUI.AssemblyInfoInputs.cache
+C:\Users\renas\Desktop\Projects\RenUI\src\RenUI\obj\Release\net8.0\RenUI.AssemblyInfo.cs
+C:\Users\renas\Desktop\Projects\RenUI\src\RenUI\obj\Release\net8.0\RenUI.csproj.CoreCompileInputs.cache
+C:\Users\renas\Desktop\Projects\RenUI\src\RenUI\obj\Release\net8.0\RenUI.dll
+C:\Users\renas\Desktop\Projects\RenUI\src\RenUI\obj\Release\net8.0\refint\RenUI.dll
+C:\Users\renas\Desktop\Projects\RenUI\src\RenUI\obj\Release\net8.0\RenUI.pdb
+C:\Users\renas\Desktop\Projects\RenUI\src\RenUI\obj\Release\net8.0\ref\RenUI.dll

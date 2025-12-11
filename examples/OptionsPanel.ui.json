@@ -1,0 +1,251 @@
+{
+  "version": "1.0",
+  "name": "OptionsPanel",
+  "description": "Options/Settings UI panel",
+  "width": 800,
+  "height": 600,
+  "resources": {
+    "textures": {},
+    "fonts": {
+      "default": "Fonts/DefaultFont",
+      "heading": "Fonts/HeadingFont"
+    }
+  },
+  "elements": [
+    {
+      "id": "panel_options_main",
+      "type": "Panel",
+      "name": "OptionsMainPanel",
+      "x": 0,
+      "y": 0,
+      "width": 800,
+      "height": 600,
+      "isEnabled": true,
+      "isVisible": true,
+      "anchor": "Fill",
+      "margin": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+      "padding": { "left": 24, "top": 24, "right": 24, "bottom": 24 },
+      "properties": {
+        "backgroundColor": "#2D2D2DFF",
+        "borderColor": "#404040FF",
+        "borderThickness": 2,
+        "cornerRadius": 8
+      },
+      "children": [
+        {
+          "id": "label_options_title",
+          "type": "Label",
+          "name": "OptionsTitle",
+          "fontId": "heading",
+          "x": 0,
+          "y": 0,
+          "width": 752,
+          "height": 40,
+          "isEnabled": true,
+          "isVisible": true,
+          "anchor": "TopCenter",
+          "margin": { "left": 0, "top": 0, "right": 0, "bottom": 24 },
+          "padding": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "properties": {
+            "text": "OPTIONS",
+            "textColor": "#FFFFFFFF",
+            "horizontalAlignment": "Center"
+          },
+          "children": []
+        },
+        {
+          "id": "label_master_volume",
+          "type": "Label",
+          "name": "MasterVolumeLabel",
+          "fontId": "default",
+          "x": 0,
+          "y": 80,
+          "width": 200,
+          "height": 24,
+          "isEnabled": true,
+          "isVisible": true,
+          "anchor": "TopLeft",
+          "margin": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "padding": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "properties": {
+            "text": "Master Volume",
+            "textColor": "#B0B0B0FF",
+            "horizontalAlignment": "Start"
+          },
+          "children": []
+        },
+        {
+          "id": "slider_master_volume",
+          "type": "Slider",
+          "name": "MasterVolumeSlider",
+          "x": 220,
+          "y": 80,
+          "width": 300,
+          "height": 24,
+          "isEnabled": true,
+          "isVisible": true,
+          "anchor": "TopLeft",
+          "margin": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "padding": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "properties": {
+            "minValue": 0,
+            "maxValue": 100,
+            "value": 80,
+            "step": 5,
+            "orientation": "Horizontal",
+            "trackColor": "#404040FF",
+            "trackFillColor": "#0078D7FF",
+            "thumbColor": "#FFFFFFFF"
+          },
+          "children": []
+        },
+        {
+          "id": "label_music_volume",
+          "type": "Label",
+          "name": "MusicVolumeLabel",
+          "fontId": "default",
+          "x": 0,
+          "y": 130,
+          "width": 200,
+          "height": 24,
+          "isEnabled": true,
+          "isVisible": true,
+          "anchor": "TopLeft",
+          "margin": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "padding": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "properties": {
+            "text": "Music Volume",
+            "textColor": "#B0B0B0FF",
+            "horizontalAlignment": "Start"
+          },
+          "children": []
+        },
+        {
+          "id": "slider_music_volume",
+          "type": "Slider",
+          "name": "MusicVolumeSlider",
+          "x": 220,
+          "y": 130,
+          "width": 300,
+          "height": 24,
+          "isEnabled": true,
+          "isVisible": true,
+          "anchor": "TopLeft",
+          "margin": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "padding": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "properties": {
+            "minValue": 0,
+            "maxValue": 100,
+            "value": 70,
+            "step": 5,
+            "orientation": "Horizontal",
+            "trackColor": "#404040FF",
+            "trackFillColor": "#0078D7FF",
+            "thumbColor": "#FFFFFFFF"
+          },
+          "children": []
+        },
+        {
+          "id": "checkbox_fullscreen",
+          "type": "CheckBox",
+          "name": "FullscreenCheckbox",
+          "fontId": "default",
+          "x": 0,
+          "y": 200,
+          "width": 200,
+          "height": 28,
+          "isEnabled": true,
+          "isVisible": true,
+          "anchor": "TopLeft",
+          "margin": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "padding": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "properties": {
+            "text": "Fullscreen",
+            "isChecked": false,
+            "textColor": "#FFFFFFFF",
+            "checkColor": "#0078D7FF",
+            "boxSize": 20
+          },
+          "children": []
+        },
+        {
+          "id": "checkbox_vsync",
+          "type": "CheckBox",
+          "name": "VsyncCheckbox",
+          "fontId": "default",
+          "x": 0,
+          "y": 240,
+          "width": 200,
+          "height": 28,
+          "isEnabled": true,
+          "isVisible": true,
+          "anchor": "TopLeft",
+          "margin": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "padding": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "properties": {
+            "text": "VSync",
+            "isChecked": true,
+            "textColor": "#FFFFFFFF",
+            "checkColor": "#0078D7FF",
+            "boxSize": 20
+          },
+          "children": []
+        },
+        {
+          "id": "btn_apply",
+          "type": "Button",
+          "name": "ApplyButton",
+          "fontId": "default",
+          "x": 480,
+          "y": 520,
+          "width": 120,
+          "height": 44,
+          "isEnabled": true,
+          "isVisible": true,
+          "anchor": "BottomRight",
+          "margin": { "left": 0, "top": 0, "right": 140, "bottom": 0 },
+          "padding": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "properties": {
+            "text": "Apply",
+            "backgroundColor": "#0078D7FF",
+            "hoverColor": "#1E90FFFF",
+            "pressedColor": "#005A9EFF",
+            "textColor": "#FFFFFFFF",
+            "borderThickness": 0,
+            "cornerRadius": 6
+          },
+          "children": []
+        },
+        {
+          "id": "btn_back",
+          "type": "Button",
+          "name": "BackButton",
+          "fontId": "default",
+          "x": 620,
+          "y": 520,
+          "width": 120,
+          "height": 44,
+          "isEnabled": true,
+          "isVisible": true,
+          "anchor": "BottomRight",
+          "margin": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "padding": { "left": 0, "top": 0, "right": 0, "bottom": 0 },
+          "properties": {
+            "text": "Back",
+            "backgroundColor": "#464646FF",
+            "hoverColor": "#5A5A5AFF",
+            "pressedColor": "#323232FF",
+            "textColor": "#FFFFFFFF",
+            "borderThickness": 0,
+            "cornerRadius": 6
+          },
+          "children": []
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "author": "RenUI Editor",
+    "createdAt": "2024-01-01"
+  }
+}
