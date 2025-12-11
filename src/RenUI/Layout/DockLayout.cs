@@ -4,6 +4,10 @@ using RenUI.Elements.Base;
 
 namespace RenUI.Layout;
 
+/// <summary>
+/// Dock layout that arranges children along the edges of the container.
+/// Children are docked to Left, Top, Right, or Bottom, with the last child optionally filling remaining space.
+/// </summary>
 public class DockLayout : ILayoutStrategy
 {
     private readonly Dictionary<IUIElement, Dock> _dockPositions = new();
@@ -18,6 +22,14 @@ public class DockLayout : ILayoutStrategy
     public Dock GetDock(IUIElement element)
     {
         return _dockPositions.TryGetValue(element, out var dock) ? dock : Dock.Left;
+    }
+
+    /// <summary>
+    /// Clears dock position for an element.
+    /// </summary>
+    public void ClearDock(IUIElement element)
+    {
+        _dockPositions.Remove(element);
     }
 
     public void ApplyLayout(IContainer container)
@@ -99,6 +111,52 @@ public class DockLayout : ILayoutStrategy
                     break;
             }
         }
+    }
+
+    public Point MeasureContent(IContainer container)
+    {
+        var visibleChildren = container.Children
+            .Where(c => c is UIElement el && el.IsVisible)
+            .ToList();
+
+        if (visibleChildren.Count == 0) return Point.Zero;
+
+        int totalWidth = 0;
+        int totalHeight = 0;
+        int leftRight = 0;
+        int topBottom = 0;
+
+        foreach (var child in visibleChildren)
+        {
+            var childSize = LayoutUtils.MeasureChild(child);
+            var marginSize = LayoutUtils.GetMarginSize(child);
+            var dock = GetDock(child);
+
+            switch (dock)
+            {
+                case Dock.Left:
+                case Dock.Right:
+                    leftRight += childSize.X + marginSize.X;
+                    totalHeight = Math.Max(totalHeight, topBottom + childSize.Y + marginSize.Y);
+                    break;
+                case Dock.Top:
+                case Dock.Bottom:
+                    topBottom += childSize.Y + marginSize.Y;
+                    totalWidth = Math.Max(totalWidth, leftRight + childSize.X + marginSize.X);
+                    break;
+            }
+        }
+
+        totalWidth = Math.Max(totalWidth, leftRight);
+        totalHeight = Math.Max(totalHeight, topBottom);
+
+        if (container is UIElement elem)
+        {
+            totalWidth += elem.Padding.Horizontal;
+            totalHeight += elem.Padding.Vertical;
+        }
+
+        return new Point(totalWidth, totalHeight);
     }
 }
 

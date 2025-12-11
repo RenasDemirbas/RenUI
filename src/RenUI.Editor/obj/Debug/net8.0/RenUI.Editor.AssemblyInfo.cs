@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RenUI.Editor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bf19ae69b3fe1da1b98551fcbca5a7fa462f287f")]
 [assembly: System.Reflection.AssemblyProductAttribute("RenUI.Editor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RenUI.Editor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

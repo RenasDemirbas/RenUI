@@ -25,3 +25,4 @@ C:\Users\renas\Desktop\Projects\RenUI\src\RenUI.Editor\obj\Debug\net8.0\refint\R
 C:\Users\renas\Desktop\Projects\RenUI\src\RenUI.Editor\obj\Debug\net8.0\RenUI.Editor.pdb
 C:\Users\renas\Desktop\Projects\RenUI\src\RenUI.Editor\obj\Debug\net8.0\RenUI.Editor.genruntimeconfig.cache
 C:\Users\renas\Desktop\Projects\RenUI\src\RenUI.Editor\obj\Debug\net8.0\ref\RenUI.Editor.dll
+C:\Users\renas\Desktop\Projects\RenUI\src\RenUI.Editor\obj\Debug\net8.0\RenUI.Editor.sourcelink.json

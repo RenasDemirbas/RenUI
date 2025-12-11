@@ -10,3 +10,4 @@ C:\Users\renas\Desktop\Projects\RenUI\src\RenUI\obj\Debug\net8.0\RenUI.dll
 C:\Users\renas\Desktop\Projects\RenUI\src\RenUI\obj\Debug\net8.0\refint\RenUI.dll
 C:\Users\renas\Desktop\Projects\RenUI\src\RenUI\obj\Debug\net8.0\RenUI.pdb
 C:\Users\renas\Desktop\Projects\RenUI\src\RenUI\obj\Debug\net8.0\ref\RenUI.dll
+C:\Users\renas\Desktop\Projects\RenUI\src\RenUI\obj\Debug\net8.0\RenUI.sourcelink.json
