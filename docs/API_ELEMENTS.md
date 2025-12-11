@@ -130,6 +130,17 @@ public class Container : UIElement, IContainer
 }
 ```
 
+### Layout Güncelleme Mekanizması
+
+Container, "dirty flag" pattern kullanarak layout güncellemelerini optimize eder:
+
+1. `AddChild()`, `RemoveChild()`, `ClearChildren()` çağrıldığında otomatik olarak `InvalidateLayout()` tetiklenir
+2. `LayoutStrategy` değiştirildiğinde otomatik olarak `InvalidateLayout()` tetiklenir
+3. Container'ın `Bounds` değiştiğinde otomatik olarak `InvalidateLayout()` tetiklenir
+4. `Update()` döngüsünde dirty flag kontrol edilir ve gerekirse `PerformLayout()` çağrılır
+
+> **💡 Not:** Layout, bir sonraki `Update()` çağrısında uygulanır. Anlık güncelleme gerekiyorsa manuel olarak `InvalidateLayout()` çağırabilirsiniz.
+
 **Kullanım:**
 ```csharp
 var container = new Container();

@@ -660,6 +660,8 @@ canvas.AddChild(btn2);
 
 > **⚠️ Dinamik Güncelleme:** Layout değişikliklerinden sonra `container.InvalidateLayout()` çağrılmalıdır (child ekleme/çıkarma otomatik yapar).
 
+> **💡 Layout Zamanlaması:** Layout güncellemeleri `Update()` döngüsünde gerçekleşir. Child eklendikten hemen sonra pozisyon değerleri henüz güncellenmemiş olabilir - bir sonraki frame'de doğru pozisyonlar uygulanır.
+
 ### Layout Seçim Rehberi
 
 ```

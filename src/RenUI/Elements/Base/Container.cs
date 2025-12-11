@@ -76,9 +76,12 @@ public class Container : UIElement, IContainer
     {
         if (!IsEnabled) return;
 
+        // Check dirty flag BEFORE base.Update() resets it
+        bool needsLayout = IsDirty;
+
         base.Update(gameTime);
 
-        if (IsDirty)
+        if (needsLayout)
         {
             PerformLayout();
         }

@@ -157,10 +157,12 @@ public interface ILayoutStrategy
 
 ### Mevcut Stratejiler
 
-1. **StackLayout**: Yatay veya dikey yığın
-2. **GridLayout**: Satır/sütun tabanlı ızgara
-3. **DockLayout**: Kenar yerleştirme (WPF tarzı)
-4. **AbsoluteLayout**: Manuel pozisyonlama
+1. **StackLayout**: Yatay veya dikey yığın, dağıtım modları destekler
+2. **FlexLayout**: CSS Flexbox benzeri esnek kutu yerleşimi
+3. **GridLayout**: Satır/sütun tabanlı ızgara (Pixel, Star, Auto boyutlandırma)
+4. **WrapLayout**: Satır/sütun wrap eden galeri düzeni
+5. **DockLayout**: Kenar yerleştirme (WPF tarzı)
+6. **AbsoluteLayout**: Manuel pozisyonlama
 
 ## Input Modülü
 
@@ -271,6 +273,9 @@ RenUIGame.Update()
                 ├── HandleMouseInput() # Input işle (yukarıdan aşağı)
                 ├── HandleKeyboardInput()
                 └── Root.Update()      # Çocukları güncelle
+                    ├── Check dirty flag
+                    ├── PerformLayout() # Dirty ise layout uygula
+                    └── Children.Update()
 ```
 
 ### Draw Döngüsü
@@ -359,7 +364,11 @@ button.OnClick.Subscribe(e =>
 
 ## Performans Notları
 
-1. **Dirty Flag**: Sadece değişen elemanlar yeniden hesaplanır
+1. **Dirty Flag Pattern**: Container'lar layout değişikliklerini dirty flag ile takip eder. Layout sadece dirty flag true olduğunda `Update()` döngüsünde yeniden hesaplanır:
+   - Child ekleme/çıkarma işlemleri dirty flag'i otomatik set eder
+   - Container boyut değişiklikleri dirty flag'i otomatik set eder
+   - LayoutStrategy değişiklikleri dirty flag'i otomatik set eder
+   
 2. **Object Pooling**: Sık oluşturulan nesneler için havuz kullanın
 3. **Texture Atlas**: Çok sayıda UI elemanı için atlas kullanın
 4. **Culling**: Görünür alan dışındaki elemanları çizmeyin
